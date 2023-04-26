@@ -1,0 +1,45 @@
+<div class="logo-container">
+  <img src="../assets/logoibge.png">
+  <h1>IBGExplorer</h1>
+</div>
+
+
+<mat-card class="card-filtro">
+  <mat-card-content>
+    <div class="container-filtro">
+      <form>
+        <mat-form-field>
+          <mat-label>Estado</mat-label>
+          <input matInput placeholder="Informe o nome ou sigla do estado" [formControl]="estadoControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.nome">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" (click)="buscaMunicipios()">Buscar Municípios</button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<table mat-table [dataSource]="municipios" *ngIf="municipios.length" class="mat-elevation-z8 tabela-municipios">
+  <ng-container matColumnDef="item-description">
+    <th mat-header-cell *matHeaderCellDef style="font-size: 24px;text-align: center;">{{estado.nome}} possuí {{municipios.length}} Municípios.</th>
+  </ng-container>
+  <ng-container matColumnDef="nome">
+    <th mat-header-cell *matHeaderCellDef> Nome </th>
+    <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="['item-description']"
+      class="example-second-header-row">
+  </tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-card *ngIf="nodatabase" class="nodatabase">
+  <img src="../assets/database-eye-off.svg">
+  <span>Infelizmente não encontramos nenhum registro.</span>
+</mat-card>
